@@ -2,12 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\DatabaseSeeder;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
-        $this->call(AdminSeeder::class);
+        $this->call([
+            AdminSeeder::class,
+        ]);
     }
 }

@@ -21,3 +21,11 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Agent & Skills
+.agents/
+AGENTS.md
+
+# Dokumentasi Internal MD
+DOKUMENTASI_SISTEM_DAN_UI.md
+Tuan Parfum System Design Documentation.md

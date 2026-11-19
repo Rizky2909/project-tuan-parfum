@@ -1,158 +1,239 @@
 @extends('layouts.app')
-@section('title', 'Katalog – Tuan Parfum')
+
+@section('title', 'Katalog Parfum – Tuan Parfum')
 
 @section('content')
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{--green:#0d3024;--gold:#c9a227;--line:rgba(255,255,255,.08);--text:#E6E9EF;--muted:#9AA3B2;--teal:#9fb5aa;--card:#101623}
-  .katalog-dark{background:var(--bg);color:var(--text);margin:-3rem 0 -4rem 0;padding:10px 0 80px}
-  .katalog-dark .wrap{max-width:1440px;margin:0 auto;padding:0 36px}
-  .katalog-dark .search{display:flex;gap:14px;margin:36px 0}
-  .katalog-dark .search input{flex:1;height:56px;border:1px solid var(--line);padding:0 24px 0 50px;font:16px Figtree,sans-serif;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23c9a227' stroke-width='2'%3E%3Ccircle cx='7.5' cy='7.5' r='6'/%3E%3Cpath d='M12 12l5 5'/%3E%3C/svg%3E") no-repeat 18px center;color:var(--text)}
-  .katalog-dark .search input::placeholder{color:var(--muted)}
-  .katalog-dark .search input:focus{outline:none;border-color:rgba(201,162,39,.6);box-shadow:0 0 0 1px rgba(201,162,39,.25)}
-  .katalog-dark .btn{font:600 14px Figtree,sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(201,162,39,.9)}
-  .katalog-dark .btn-dark{background:linear-gradient(90deg,#b8941f 0%,#d9b63b 100%);color:#101623}
-  .katalog-dark .search .btn{width:150px;height:56px}
-  .katalog-dark .layout{display:grid;grid-template-columns:314px 1fr;gap:36px;align-items:start}
-  .katalog-dark aside{background:radial-gradient(circle at top,rgba(255,255,255,.01) 0%,transparent 70%),var(--card);border:1px solid var(--line);padding:30px 28px;box-shadow:0 60px 90px -70px rgba(201,162,39,.18)}
-  .katalog-dark .side-head{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:18px;border-bottom:1px solid var(--line)}
-  .katalog-dark .side-head h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:21px;letter-spacing:.18em;margin:0}
-  .katalog-dark .side-head a{color:var(--gold);font-size:14px;font-weight:500;text-decoration:none}
-  .katalog-dark .group{padding:22px 0;border-bottom:1px solid var(--line)}
-  .katalog-dark .group:last-child{border:0;padding-bottom:0}
-  .katalog-dark .group h3{font-size:12px;letter-spacing:.16em;font-weight:600;margin-bottom:18px;color:var(--muted)}
-  .katalog-dark .opt{display:flex;align-items:center;gap:12px;font-size:16px;color:var(--muted);margin-bottom:16px;cursor:pointer}
-  .katalog-dark .opt:last-child{margin-bottom:0}
-  .katalog-dark .opt input{appearance:none;width:18px;height:18px;border:1px solid rgba(255,255,255,.25);background:transparent;flex:none}
-  .katalog-dark .opt input[type=radio]{border-radius:50%}
-  .katalog-dark .opt input[type=checkbox]{border-radius:3px}
-  .katalog-dark .opt input[type=radio]:checked{border:5px solid var(--gold)}
-  .katalog-dark .opt input[type=checkbox]:checked{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%23101623' stroke-width='2'/%3E%3C/svg%3E");border-color:var(--gold)}
-  .katalog-dark .opt.on{color:var(--text);font-weight:500}
-  .katalog-dark .range{width:100%;accent-color:var(--gold)}
-  .katalog-dark .range-labels{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-top:14px}
-  .katalog-dark .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-  .katalog-dark .card{background:radial-gradient(circle at top,rgba(255,255,255,.01) 0%,transparent 70%),var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 60px 100px -80px rgba(201,162,39,.22);overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
-  .katalog-dark .card:hover{transform:translateY(-6px);box-shadow:0 70px 110px -70px rgba(201,162,39,.28);border-color:rgba(201,162,39,.5)}
-  .katalog-dark .thumb{position:relative;aspect-ratio:1/.995;background:radial-gradient(circle at top,#b99a5d 0%,#3a2816 100%)}
-  .katalog-dark .thumb.t2{background:radial-gradient(circle at top,#e7c99a 0%,#7a5a2c 100%)}
-  .katalog-dark .thumb.t3{background:radial-gradient(circle at top,#b9b9b6 0%,#3f3f3d 100%)}
-  .katalog-dark .thumb.t4{background:radial-gradient(circle at top,#d9b06a 0%,#705022 100%)}
-  .katalog-dark .thumb.t5{background:radial-gradient(circle at top,#7c5a32 0%,#22170d 100%)}
-  .katalog-dark .thumb.t6{background:radial-gradient(circle at top,#f0ebe2 0%,#b9b3a6 100%)}
-  .katalog-dark .tag{position:absolute;top:16px;left:16px;font-size:11px;font-weight:600;letter-spacing:.16em;padding:6px 12px;background:rgba(16,22,35,.9);color:var(--gold);border:1px solid rgba(201,162,39,.8);text-transform:uppercase}
-  .katalog-dark .tag.new{background:linear-gradient(90deg,#b8941f 0%,#d9b63b 100%);color:#101623;border:none}
-  .katalog-dark .body{padding:22px 22px 20px}
-  .katalog-dark .body h4{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;letter-spacing:.08em;text-transform:uppercase;margin:0}
-  .katalog-dark .meta{font-size:14px;color:var(--teal);margin-top:8px}
-  .katalog-dark .row{display:flex;justify-content:space-between;align-items:center;margin:18px 0 22px}
-  .katalog-dark .price{font-size:18px;font-weight:500}
-  .katalog-dark .stock{font-size:12px;color:#b9f3d0;background:rgba(20,83,45,.4);border:1px solid rgba(52,211,153,.4);padding:4px 12px;letter-spacing:.08em;text-transform:uppercase}
-  .katalog-dark .stock.low{background:rgba(120,53,15,.4);border-color:rgba(251,191,36,.5);color:#f5d16e}
-  .katalog-dark .actions{display:grid;grid-template-columns:1fr 1.1fr;gap:10px}
-  .katalog-dark .actions .btn{height:40px;font-size:12px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-  .katalog-dark .btn-light{background:transparent;color:var(--text);border-color:var(--line)}
-  .katalog-dark .btn-light:hover{border-color:rgba(201,162,39,.7)}
-  .katalog-dark .btn-dark em{font-style:normal;color:#101623;margin-right:6px}
-  .katalog-dark .pager{border-top:1px solid var(--line);margin-top:40px;padding:36px 0 60px;display:flex;justify-content:center;gap:10px}
-  .katalog-dark .pager a{width:42px;height:42px;border:1px solid var(--line);background:transparent;display:grid;place-items:center;font-size:16px;text-decoration:none;color:var(--muted)}
-  .katalog-dark .pager a.cur{background:linear-gradient(90deg,#b8941f 0%,#d9b63b 100%);color:#101623;border:none}
-    .katalog-dark .range-labels{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:16px;gap:10px}
-  .katalog-dark .range-labels span{flex:1;text-align:center}
-  .katalog-dark .range-labels span:nth-child(2){color:var(--text);font-weight:600}
-  @media(max-width:980px){.katalog-dark .layout{grid-template-columns:1fr}.katalog-dark .grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:620px){.katalog-dark .wrap{padding:0 18px}.katalog-dark .grid{grid-template-columns:1fr}}
-</style>
+<div class="space-y-10 animate-subtle-in">
 
-<div class="katalog-dark">
-  <div class="wrap">
-    <div class="search">
-      <input type="text" placeholder="Cari parfum impian Anda (misal: Oud, Vanille, Woody)...">
-      <button class="btn btn-dark">CARI</button>
+  <!-- Header Seksi (Sesuai Dokumentasi 8.2) -->
+  <div class="reveal-on-scroll border-b border-white/10 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <span class="text-xs font-semibold tracking-wider text-[#C9A227] uppercase block mb-1 font-sans">
+        Koleksi Wewangian
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-white tracking-wide">
+        Katalog Parfum
+      </h1>
+      <p class="text-xs sm:text-sm text-[#9AA3B2] mt-1 font-light">
+        Seluruh varian di bawah ini tersedia dan siap dipesan.
+      </p>
     </div>
 
-    <div class="layout">
-      <aside>
-        <div class="side-head"><h2>KATEGORI</h2><a href="#">RESET</a></div>
-        <div class="group">
-          <label class="opt on"><input type="radio" name="kat" checked> Semua Kategori</label>
-          <label class="opt"><input type="radio" name="kat"> Pria</label>
-          <label class="opt"><input type="radio" name="kat"> Wanita</label>
-          <label class="opt"><input type="radio" name="kat"> Unisex</label>
-          <label class="opt"><input type="radio" name="kat"> Koleksi Eksklusif</label>
-        </div>
-        <div class="group">
-          <h3>KARAKTER AROMA</h3>
-          <label class="opt on"><input type="checkbox" checked> Woody &amp; Amber</label>
-          <label class="opt"><input type="checkbox"> Floral &amp; Powdery</label>
-          <label class="opt"><input type="checkbox"> Citrus &amp; Fresh</label>
-          <label class="opt"><input type="checkbox"> Oriental Gourmand</label>
-        </div>
-                <div class="group">
-          <h3>RENTANG HARGA</h3>
-          <input class="range" id="hargaRange" type="range" min="200000" max="2500000" step="10000" value="900000">
-          <div class="range-labels">
-            <span>Rp 200.000</span>
-            <span id="hargaValue">Rp 900.000</span>
-            <span>Rp 2.500.000</span>
-          </div>
-        </div>
-        <script>
-          const hargaRange = document.getElementById('hargaRange');
-          const hargaValue = document.getElementById('hargaValue');
-          const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-          const updateHarga = () => { hargaValue.textContent = formatRupiah(hargaRange.value); };
-          hargaRange.addEventListener('input', updateHarga);
-          updateHarga();
-        </script>
-      </aside>
-
-      <section>
-        <div class="grid">
-          <article class="card">
-            <div class="thumb"><span class="tag">BEST SELLER</span></div>
-            <div class="body"><h4>Oud Imperial</h4><p class="meta">Unisex | 100 ml</p>
-              <div class="row"><span class="price">Rp 650.000</span><span class="stock">Tersedia</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 1) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-          <article class="card">
-            <div class="thumb t2"><span class="tag new">NEW</span></div>
-            <div class="body"><h4>Santal Velvet</h4><p class="meta">Pria | 100 ml</p>
-              <div class="row"><span class="price">Rp 520.000</span><span class="stock">Tersedia</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 2) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-          <article class="card">
-            <div class="thumb t3"></div>
-            <div class="body"><h4>Rose Ébène</h4><p class="meta">Wanita | 100 ml</p>
-              <div class="row"><span class="price">Rp 580.000</span><span class="stock">Tersedia</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 3) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-          <article class="card">
-            <div class="thumb t4"></div>
-            <div class="body"><h4>Bergamot Drift</h4><p class="meta">Unisex | 100 ml</p>
-              <div class="row"><span class="price">Rp 480.000</span><span class="stock">Tersedia</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 4) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-          <article class="card">
-            <div class="thumb t5"><span class="tag">BEST SELLER</span></div>
-            <div class="body"><h4>Tobacco Nectar</h4><p class="meta">Pria | 100 ml</p>
-              <div class="row"><span class="price">Rp 720.000</span><span class="stock low">Stok Terbatas</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 5) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-          <article class="card">
-            <div class="thumb t6"></div>
-            <div class="body"><h4>Blanc Musk</h4><p class="meta">Unisex | 100 ml</p>
-              <div class="row"><span class="price">Rp 450.000</span><span class="stock">Tersedia</span></div>
-              <div class="actions"><a href="{{ route('katalog.detail', 6) }}" class="btn btn-light">DETAIL</a><button class="btn btn-dark"><em>+</em> KERANJANG</button></div></div>
-          </article>
-        </div>
-
-        <div class="pager">
-          <a href="#">‹</a><a class="cur" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">›</a>
-        </div>
-      </section>
+    <!-- Quick Stats -->
+    <div class="text-xs text-[#9AA3B2] font-sans">
+      Menampilkan <span class="text-[#C9A227] font-semibold tabular-nums">{{ $parfums->count() }}</span> varian wewangian
     </div>
   </div>
+
+  <!-- Filter & Search Toolbar -->
+  <div class="reveal-on-scroll card-luxury p-4 sm:p-5 rounded-sm bg-[#101623] border border-white/10 space-y-4">
+    <form action="{{ route('katalog') }}" method="GET" class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-[#9AA3B2] text-sm pointer-events-none"></i>
+        <input type="text"
+               name="q"
+               value="{{ request('q') }}"
+               placeholder="Cari aroma, varian, atau nama parfum..."
+               class="w-full bg-[#161E2E] border border-white/10 rounded-sm pl-11 pr-4 py-2.5 text-xs text-white placeholder-[#9AA3B2]/60 focus:outline-none focus:border-[#C9A227] transition-colors">
+      </div>
+
+      <!-- Kategori Filter -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+        @php
+          $selectedCat = request('kategori', 'Semua');
+          $categories = ['Semua', 'Pria', 'Wanita', 'Unisex', 'Koleksi Eksklusif'];
+        @endphp
+
+        @foreach($categories as $cat)
+          <a href="{{ route('katalog', array_merge(request()->query(), ['kategori' => $cat])) }}"
+             class="px-3 py-2 rounded-sm text-xs font-semibold uppercase tracking-wider transition-all duration-200 active:scale-95 whitespace-nowrap {{ $selectedCat === $cat ? 'bg-[#C9A227] text-[#0A0E17] shadow-sm' : 'bg-[#161E2E] text-[#A0AAB9] hover:text-white hover:border-[#C9A227]/30 border border-white/5' }}">
+            {{ $cat }}
+          </a>
+        @endforeach
+      </div>
+
+      <!-- Submit / Reset Buttons -->
+      <div class="flex items-center gap-2">
+        <button type="submit" class="btn-gold px-5 py-2.5 rounded-sm text-xs font-semibold uppercase tracking-wider whitespace-nowrap">
+          Cari
+        </button>
+        @if(request()->has('q') || (request()->has('kategori') && request('kategori') !== 'Semua'))
+          <a href="{{ route('katalog') }}" class="px-3 py-2.5 rounded-sm border border-white/10 text-xs font-semibold uppercase tracking-wider text-[#9AA3B2] hover:text-white transition-colors whitespace-nowrap">
+            Reset
+          </a>
+        @endif
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Product Grid (Standar Rasio 3:4 Sesuai Dokumentasi 6.1) -->
+  @if($parfums->isEmpty())
+    <!-- Empty State (R-27) -->
+    <div class="card-luxury p-12 text-center rounded-sm bg-[#101623] border border-white/10 space-y-4">
+      <div class="w-12 h-12 rounded-sm border border-[#C9A227]/40 text-[#C9A227] mx-auto flex items-center justify-center text-xl">
+        <i class="bi bi-search"></i>
+      </div>
+      <div class="space-y-1">
+        <h3 class="font-serif text-xl font-bold text-white">Tidak Ada Parfum Ditemukan</h3>
+        <p class="text-xs text-[#9AA3B2] max-w-md mx-auto font-light">
+          Varian parfum yang Anda cari tidak tersedia. Silakan gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.
+        </p>
+      </div>
+      <div>
+        <a href="{{ route('katalog') }}" class="btn-gold px-5 py-2.5 rounded-sm text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2">
+          Lihat Seluruh Katalog
+        </a>
+      </div>
+    </div>
+  @else
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger-parent">
+      @foreach($parfums as $item)
+        <div class="stagger-item group card-luxury card-interactive rounded-sm overflow-hidden border border-white/10 hover:border-[#C9A227] flex flex-col justify-between bg-[#101623]">
+
+          <!-- 3:4 Media Container -->
+          <a href="{{ route('katalog.detail', $item->id) }}" class="relative aspect-[3/4] w-full overflow-hidden bg-[#151B28] block">
+
+            @if(!empty($item->foto))
+              <img src="{{ asset($item->foto) }}" alt="{{ $item->nama }}"
+                   class="w-full h-full object-cover object-center img-zoom-smooth">
+            @else
+              <!-- Minimalist Bottle Silhouette SVG Placeholder (Matte Noir) -->
+              <div class="w-full h-full bg-[#131824] p-5 flex flex-col justify-between items-center text-center relative border-b border-white/5 group-hover:bg-[#161D2C] transition-colors">
+                <div class="w-full flex justify-between items-center text-[10px] text-[#9AA3B2] uppercase tracking-wider">
+                  <span class="px-2 py-0.5 bg-[#0A0E17] border border-white/10 text-white font-medium">
+                    {{ $item->kategori }}
+                  </span>
+                  <span>{{ $item->volume }} ml</span>
+                </div>
+
+                <div class="my-auto flex flex-col items-center">
+                  <svg class="w-9 h-14 stroke-[#C9A227] fill-none stroke-[1.2] mb-2.5 opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300" viewBox="0 0 24 38">
+                    <rect x="7" y="2" width="10" height="6" rx="0.5" stroke="currentColor"/>
+                    <rect x="9" y="8" width="6" height="2" stroke="currentColor"/>
+                    <rect x="3" y="10" width="18" height="25" rx="1" stroke="currentColor"/>
+                    <rect x="6" y="15" width="12" height="15" rx="0.5" stroke="currentColor" stroke-dasharray="1 1" opacity="0.6"/>
+                    <text x="12" y="24" text-anchor="middle" font-size="5" fill="#C9A227" font-family="serif" font-weight="bold">TP</text>
+                  </svg>
+                  <span class="font-serif text-sm text-white font-semibold tracking-wider block leading-tight">
+                    {{ $item->nama }}
+                  </span>
+                  <span class="text-[9px] uppercase tracking-[0.25em] text-[#C9A227] mt-1 font-sans">
+                    Tuan Parfum
+                  </span>
+                </div>
+
+                <div class="w-full text-left text-[9px]">
+                  @if($item->stok > 5)
+                    <span class="text-[#34D399] font-medium inline-flex items-center">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#34D399] mr-1.5 animate-soft-pulse"></span>
+                      Tersedia ({{ $item->stok }} Botol)
+                    </span>
+                  @elseif($item->stok > 0)
+                    <span class="text-[#FBBF24] font-medium inline-flex items-center">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#FBBF24] mr-1.5 animate-soft-pulse"></span>
+                      Sisa {{ $item->stok }} Botol
+                    </span>
+                  @else
+                    <span class="text-[#F87171] font-medium inline-flex items-center">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#F87171] mr-1.5"></span>
+                      Stok Habis
+                    </span>
+                  @endif
+                </div>
+              </div>
+            @endif
+
+            <!-- Top Overlays: Kategori & Volume -->
+            @if(!empty($item->foto))
+              <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                <span class="px-2 py-0.5 bg-[#0A0E17]/80 backdrop-blur-sm border border-white/10 text-[10px] uppercase font-semibold text-white tracking-wider">
+                  {{ $item->kategori }}
+                </span>
+                <span class="px-2 py-0.5 bg-[#0A0E17]/80 backdrop-blur-sm border border-white/10 text-[10px] uppercase font-medium text-[#A0AAB9] tracking-wider">
+                  {{ $item->volume }} ml
+                </span>
+              </div>
+            @endif
+
+            <!-- Out of Stock Overlay -->
+            @if($item->stok === 0)
+              <div class="absolute inset-0 bg-[#0A0E17]/70 backdrop-blur-[2px] flex items-center justify-center p-4">
+                <span class="px-3 py-1 bg-[#F87171]/20 border border-[#F87171]/50 text-[#F87171] text-xs font-semibold uppercase tracking-wider">
+                  Stok Habis
+                </span>
+              </div>
+            @endif
+
+          </a>
+
+          <!-- Information & Action Bar -->
+          <div class="p-4 flex flex-col flex-grow justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between text-[11px] text-[#A0AAB9] uppercase tracking-wider mb-1">
+                <span>{{ $item->kategori }}</span>
+                <span>{{ $item->volume }} ml</span>
+              </div>
+              <a href="{{ route('katalog.detail', $item->id) }}" class="block">
+                <h2 class="font-serif text-base font-bold text-white hover:text-[#C9A227] transition-colors leading-snug line-clamp-2">
+                  {{ $item->nama }}
+                </h2>
+              </a>
+              @if(!empty($item->deskripsi))
+                <p class="text-xs text-[#A0AAB9] line-clamp-2 mt-1 font-light">
+                  {{ $item->deskripsi }}
+                </p>
+              @endif
+            </div>
+
+            <!-- Single Row: Price & Pesan Button (R-26) -->
+            <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
+              <div>
+                <span class="block text-[10px] uppercase tracking-wider text-[#6E7889]">Harga</span>
+                <span class="font-semibold text-sm sm:text-base text-[#C9A227] tabular-nums">
+                  {{ $item->harga_rupiah ?? 'Rp ' . number_format($item->harga, 0, ',', '.') }}
+                </span>
+              </div>
+
+              <!-- Tombol Pesan (Guest dialihkan ke login, disabled jika stok 0) -->
+              @if($item->stok > 0)
+                <a href="{{ Auth::check() ? route('keranjang') : route('login') }}"
+                   class="btn-gold px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all">
+                  Pesan
+                </a>
+              @else
+                <button type="button" disabled
+                        class="px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase bg-white/5 text-[#6E7889] border border-white/5 cursor-not-allowed">
+                  Habis
+                </button>
+              @endif
+            </div>
+          </div>
+
+        </div>
+      @endforeach
+    </div>
+  @endif
+
+  <!-- Customer Support Banner -->
+  <section class="reveal-on-scroll rounded-sm border border-white/10 bg-[#101623] p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="space-y-1">
+      <h3 class="text-base sm:text-lg font-bold text-white">Bingung Memilih Aroma?</h3>
+      <p class="text-xs text-[#A0AAB9] font-light">
+        Konsultasikan selera aroma dan rekomendasi parfum terbaik langsung dengan peracik kami melalui WhatsApp.
+      </p>
+    </div>
+    <div>
+      <a href="https://wa.me/6281234567890?text=Halo%20Tuan%20Parfum,%20saya%20ingin%20konsultasi%20pilihan%20aroma"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="btn-gold px-6 py-2.5 rounded-sm text-xs font-semibold whitespace-nowrap inline-flex items-center gap-2">
+        <i class="bi bi-whatsapp"></i> Konsultasi WhatsApp
+      </a>
+    </div>
+  </section>
+
 </div>
 @endsection

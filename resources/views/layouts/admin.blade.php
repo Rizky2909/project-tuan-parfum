@@ -1,240 +1,100 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="no-js">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>@yield('title', 'Admin Panel') - Tuan Parfum</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script>document.documentElement.classList.replace('no-js', 'js-ready');</script>
+  <title>@yield('title', 'Admin Panel') – Tuan Parfum</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0A0E17;
-      --surface: #101623;
-      --surface-2: #151B2C;
-      --gold: #C9A227;
-      --gold-light: #E7B63C;
-      --text-primary: #E6E9EF;
-      --text-secondary: #9AA3B2;
-      --line: rgba(255, 255, 255, 0.08);
-      --line-gold: rgba(201, 162, 39, 0.4);
-    }
 
-    * {
-      scrollbar-color: rgba(201, 162, 39, 0.4) transparent;
-      scrollbar-width: thin;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-primary);
-      overflow-x: hidden;
-    }
-
-    .sidebar {
-      background: radial-gradient(circle at top, #151B2C 0%, #101623 100%);
-      border-right: 1px solid var(--line-gold);
-      min-height: 100vh;
-      position: sticky;
-      top: 0;
-    }
-
-    .sidebar-brand {
-      font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--text-primary);
-    }
-
-    .sidebar-brand small {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 0.38em;
-      color: var(--gold);
-      margin-top: 4px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .sidebar .list-group-item {
-      background: transparent;
-      border: none;
-      border-radius: 0 10px 10px 0;
-      margin: 4px 14px 4px 12px;
-      padding: .7rem 1rem .7rem 1.2rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      transition: all .2s ease-in-out;
-    }
-
-    .sidebar .list-group-item i {
-      font-size: 18px;
-    }
-
-    .sidebar .list-group-item:hover {
-      background: linear-gradient(90deg, rgba(201, 162, 39, 0.16) 0%, transparent 100%);
-      color: var(--text-primary);
-    }
-
-    .sidebar .list-group-item.active {
-      background: linear-gradient(90deg, rgba(201, 162, 39, 0.18) 0%, transparent 100%);
-      color: var(--text-primary);
-      box-shadow: inset 2px 0 0 var(--gold);
-    }
-
-    .navbar-admin {
-      background: radial-gradient(circle at top, #151B2C 0%, #101623 100%);
-      border-bottom: 1px solid var(--line-gold);
-      box-shadow: 0 10px 60px rgba(0, 0, 0, 0.45);
-      padding: .8rem 2rem;
-    }
-
-    .content-wrapper {
-      min-height: calc(100vh - 76px);
-    }
-
-    .card {
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.01) 0%, transparent 70%), var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 0 70px 100px -80px rgba(201, 162, 39, 0.18);
-      color: var(--text-primary);
-    }
-
-    .card-header {
-      background: transparent;
-      border-bottom: 1px solid var(--line);
-      color: var(--text-primary);
-    }
-
-    .table {
-      color: var(--text-primary);
-      --bs-table-bg: transparent;
-      --bs-table-striped-bg: rgba(255, 255, 255, 0.01);
-      --bs-table-hover-bg: rgba(201, 162, 39, 0.05);
-      --bs-table-border-color: var(--line);
-    }
-
-    .table thead th {
-      border-color: var(--line);
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      font-weight: 500;
-    }
-
-    .table td,
-    .table th {
-      border-color: var(--line);
-      vertical-align: middle;
-    }
-
-    .form-control,
-    .form-select {
-      background-color: transparent;
-      border: 1px solid var(--line);
-      color: var(--text-primary);
-      border-radius: 10px;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-      background-color: transparent;
-      color: var(--text-primary);
-      border-color: rgba(201, 162, 39, 0.7);
-      box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.25);
-    }
-
-    .form-label {
-      color: var(--text-secondary);
-      font-size: 13px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, #b8941f 0%, #d9b63b 100%);
-      border: none;
-      color: #101623;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.08);
-      color: #101623;
-    }
-
-    .btn-outline-secondary {
-      border: 1px solid var(--line);
-      color: var(--text-secondary);
-    }
-
-    .btn-outline-secondary:hover {
-      color: var(--text-primary);
-      border-color: rgba(201, 162, 39, 0.7);
-      background: transparent;
-    }
-
-    .pagination .page-link {
-      background-color: transparent;
-      border-color: var(--line);
-      color: var(--text-secondary);
-    }
-
-    .pagination .page-item.active .page-link {
-      background: linear-gradient(90deg, #b8941f 0%, #d9b63b 100%);
-      border-color: transparent;
-      color: #101623;
-    }
-  </style>
-  @stack('styles')
+  <!-- Vite Assets (Tailwind CSS & JS) -->
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-  <nav class="navbar navbar-admin navbar-dark sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center gap-3" href="{{ route('admin.dashboard') ?? '#' }}">
-        <div class="d-flex align-items-center justify-content-center" style="width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:18px;">TP</div>
-        <div class="sidebar-brand">
-          <span>TUAN PARFUM</span>
-          <small>ADMIN PANEL</small>
-        </div>
-      </a>
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-secondary small text-uppercase" style="letter-spacing:.16em;">Administrator</span>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-          @csrf
-          <button type="submit" class="btn btn-sm btn-outline-light">Keluar</button>
-        </form>
+<body class="bg-[#0A0E17] text-[#E8ECF2] font-sans antialiased min-h-screen flex selection:bg-[#C9A227] selection:text-[#0A0E17]">
+
+  <!-- Desktop Sidebar -->
+  <aside class="hidden lg:flex lg:flex-col w-64 bg-[#101623] border-r border-white/10 shrink-0 sticky top-0 h-screen overflow-y-auto">
+    <!-- Brand Header -->
+    <div class="p-6 border-b border-white/10 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-sm border border-[#C9A227] flex items-center justify-center text-[#C9A227] font-serif font-bold text-base">
+        TP
+      </div>
+      <div>
+        <span class="font-serif font-bold text-base tracking-widest text-white uppercase block leading-tight">
+          TUAN PARFUM
+        </span>
+        <span class="text-[9px] uppercase tracking-[0.25em] text-[#C9A227] font-sans font-medium">
+          Panel Administrator
+        </span>
       </div>
     </div>
-  </nav>
 
-  <div class="container-fluid">
-    <div class="row">
-      <aside class="col-lg-2 sidebar p-0">
-        <div class="pt-4 pb-2">
-          <div class="list-group list-group-flush">
-            @include('partials.admin-sidebar')
-          </div>
-        </div>
-      </aside>
-      <main class="col-lg-10 px-4 px-xl-5 py-4">
-        <div class="content-wrapper">
-          @yield('content')
-        </div>
-      </main>
+    <!-- Nav Items -->
+    <div class="p-4 flex-1">
+      @include('partials.admin-sidebar')
     </div>
+
+    <!-- Admin Footer -->
+    <div class="p-4 border-t border-white/10 text-xs text-[#A0AAB9]">
+      <span class="block text-[10px] uppercase tracking-wider text-[#6E7889]">Petugas Aktif</span>
+      <span class="font-medium text-white">{{ Auth::user()->name ?? 'Administrator' }}</span>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Topbar -->
+    <header class="sticky top-0 z-40 bg-[#101623] border-b border-white/10 h-16 flex items-center justify-between px-4 sm:px-8">
+      <div class="flex items-center gap-3">
+        <!-- Mobile Sidebar Toggle -->
+        <button id="admin-menu-btn" type="button" class="lg:hidden p-2 text-[#A0AAB9] hover:text-white" aria-label="Toggle navigation">
+          <i class="bi bi-list text-2xl"></i>
+        </button>
+        <span class="text-xs uppercase font-semibold tracking-wider text-[#A0AAB9]">
+          Sistem Administrasi &amp; Inventaris
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-wider">
+        <a href="{{ route('beranda') }}"
+           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-[#C9A227]/40 text-[#C9A227] hover:bg-[#C9A227]/10 transition-colors">
+          <i class="bi bi-shop"></i> Toko Publik
+        </a>
+      </div>
+    </header>
+
+    <!-- Mobile Dropdown Sidebar Menu -->
+    <div id="admin-mobile-menu" class="hidden lg:hidden bg-[#101623] border-b border-white/10 p-4">
+      @include('partials.admin-sidebar')
+    </div>
+
+    <!-- Page Content -->
+    <main class="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto animate-subtle-in">
+      @yield('content')
+    </main>
+
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  @stack('scripts')
+  <script>
+    const adminBtn = document.getElementById('admin-menu-btn');
+    const adminMenu = document.getElementById('admin-mobile-menu');
+    if (adminBtn && adminMenu) {
+      adminBtn.addEventListener('click', () => {
+        adminMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
 </body>
 
 </html>

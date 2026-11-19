@@ -1,254 +1,272 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" class="no-js">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script>document.documentElement.classList.replace('no-js', 'js-ready');</script>
+  <title>@yield('title', 'Tuan Parfum') – Haute Parfumerie</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&family=Figtree:wght@400;500;600&family=Playfair+Display:wght@500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0A0E17;
-      --surface: #101623;
-      --surface-2: #151B2C;
-      --gold: #C9A227;
-      --gold-light: #E7B63C;
-      --text-primary: #E6E9EF;
-      --text-secondary: #9AA3B2;
-      --line: rgba(255, 255, 255, 0.08);
-      --line-gold: rgba(201, 162, 39, 0.4);
-    }
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-primary);
-      line-height: 1.6;
-    }
-
-    .navbar {
-      background: radial-gradient(circle at top, #151B2C 0%, #101623 100%);
-      border-bottom: 1px solid var(--line-gold);
-      box-shadow: 0 10px 60px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(6px);
-    }
-
-    .navbar-brand {
-      font-weight: 700;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--text-primary) !important;
-    }
-
-    .navbar-brand small {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 0.38em;
-      color: var(--gold);
-      margin-top: 4px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .nav-link {
-      font-weight: 500;
-      color: var(--text-secondary) !important;
-      transition: all .2s ease-in-out;
-      letter-spacing: 0.02em;
-    }
-
-    .nav-link:hover {
-      color: var(--text-primary) !important;
-    }
-
-    .nav-link.active {
-      color: var(--text-primary) !important;
-      position: relative;
-    }
-
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -10px;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
-    }
-
-    .btn-primary {
-      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
-      border: none;
-      color: #101623;
-      font-weight: 600;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.08);
-      color: #101623;
-    }
-
-    .card {
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.01) 0%, transparent 70%), var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: 0 40px 80px -60px rgba(201, 162, 39, 0.25);
-      overflow: hidden;
-      color: var(--text-primary);
-    }
-
-    .card-header {
-      background: transparent;
-      border-bottom: 1px solid var(--line);
-      font-weight: 600;
-    }
-
-    footer {
-      background: radial-gradient(circle at top, #151B2C 0%, #0b101b 100%);
-      border-top: 1px solid var(--line-gold);
-      margin-top: 5rem;
-      padding: 3rem 0 2rem;
-      color: var(--text-secondary);
-    }
-
-    footer .footer-brand {
-      font-weight: 700;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--text-primary);
-    }
-
-    footer .footer-brand small {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 0.36em;
-      color: var(--gold);
-      margin-top: 4px;
-    }
-
-    footer a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color .2s ease;
-    }
-
-    footer a:hover {
-      color: var(--text-primary);
-    }
-
-    footer h6 {
-      color: var(--text-primary);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    footer hr {
-      border-color: var(--line);
-    }
-
-    main {
-      min-height: calc(100vh - 320px);
-    }
-  </style>
-  <title>@yield('title', 'Tuan Parfum')</title>
+  <!-- Vite Assets (Tailwind CSS & JS) -->
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center gap-3" href="{{ route('beranda') }}">
-        <div class="d-flex align-items-center justify-content-center" style="width:44px;height:44px;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:.08em;">TP</div>
-        <div>
-          <span>TUAN PARFUM</span>
-          <small>HAUTE PARFUMERIE</small>
-        </div>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto gap-lg-4">
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('katalog*') ? 'active' : '' }}" href="{{ route('katalog') }}">KATALOG</a></li>
-          <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2 {{ request()->routeIs('keranjang') ? 'active' : '' }}" href="{{ route('keranjang') }}"><i class="bi bi-bag"></i> KERANJANG</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('pesanan*') ? 'active' : '' }}" href="{{ route('pesanan') }}">PESANAN SAYA</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('profil*') ? 'active' : '' }}" href="{{ route('profil') }}">PROFIL</a></li>
-        </ul>
-        <div class="d-none d-lg-flex align-items-center gap-3">
+<body class="bg-[#0A0E17] text-[#E6E9EF] font-sans antialiased min-h-screen flex flex-col selection:bg-[#C9A227] selection:text-[#0A0E17]">
+
+  <!-- Header / Navigation (Solid matte luxury) -->
+  <header class="sticky top-0 z-50 bg-[#0D121D]/98 border-b border-[#C9A227]/30 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+
+        <!-- Brand Logo -->
+        <a href="{{ route('beranda') }}" class="flex items-center gap-3 group transition-transform duration-200">
+          <div class="w-11 h-11 rounded-sm border border-[#C9A227] flex items-center justify-center text-[#C9A227] font-serif text-lg font-bold tracking-widest group-hover:border-[#DFB942] group-hover:scale-105 transition-all duration-300">
+            TP
+          </div>
+          <div class="flex flex-col">
+            <span class="font-serif font-bold text-lg md:text-xl tracking-[0.24em] text-[#E6E9EF] uppercase leading-tight group-hover:text-white transition-colors">
+              TUAN PARFUM
+            </span>
+            <span class="text-[9px] tracking-[0.38em] text-[#C9A227] uppercase font-sans font-medium">
+              HAUTE PARFUMERIE
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-[0.16em] uppercase">
+          <a href="{{ route('katalog') }}"
+             class="transition-colors pb-1 border-b-2 {{ request()->routeIs('katalog*') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
+            Katalog
+          </a>
+          <a href="{{ route('keranjang') }}"
+             class="flex items-center gap-2 transition-colors pb-1 border-b-2 {{ request()->routeIs('keranjang') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
+            <i class="bi bi-bag text-sm text-[#C9A227]"></i>
+            Keranjang
+          </a>
+          <a href="{{ route('pesanan') }}"
+             class="transition-colors pb-1 border-b-2 {{ request()->routeIs('pesanan*') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
+            Pesanan Saya
+          </a>
+          <a href="{{ route('profil') }}"
+             class="transition-colors pb-1 border-b-2 {{ request()->routeIs('profil*') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
+            Profil
+          </a>
+        </nav>
+
+        <!-- Desktop Auth & Admin Dashboard Button -->
+        <div class="hidden md:flex items-center gap-4 text-xs font-semibold tracking-[0.16em]">
+
+          <!-- Tombol Pintasan Panel Admin (Section 3.2 Dokumentasi) -->
+          @if(Auth::check() && Auth::user()->role === 'admin')
+            <a href="{{ route('admin.dashboard') }}"
+               class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium tracking-wide uppercase bg-[#C9A227] text-[#0A0E17] hover:bg-[#DFB942] transition-colors rounded-sm shadow-sm">
+              <i class="bi bi-speedometer2" aria-hidden="true"></i>
+              <span>Dashboard Admin</span>
+            </a>
+          @endif
+
           @auth
-            <span class="text-secondary small">Halo, {{ Auth::user()->name }}</span>
-            <form action="{{ route('logout') }}" method="POST" class="m-0">
+            <span class="text-[#9AA3B2] normal-case tracking-normal text-sm">
+              Halo, <span class="text-white font-medium">{{ Auth::user()->name }}</span>
+            </span>
+            <form action="{{ route('logout') }}" method="POST" class="inline m-0">
               @csrf
-              <button type="submit" class="btn btn-link text-decoration-none small text-uppercase p-0" style="letter-spacing:.16em;color:var(--text-secondary);">KELUAR</button>
+              <button type="submit" class="text-[#9AA3B2] hover:text-[#C9A227] uppercase transition-colors">
+                Keluar
+              </button>
             </form>
           @else
-            <a href="{{ route('login') }}" class="text-decoration-none small text-uppercase" style="letter-spacing:.16em;color:var(--text-secondary);">MASUK</a>
-            <span style="color:rgba(255,255,255,.2)">|</span>
-            <a href="{{ route('register') }}" class="text-decoration-none small text-uppercase" style="letter-spacing:.16em;color:var(--gold);">DAFTAR</a>
+            <a href="{{ route('login') }}" class="text-[#9AA3B2] hover:text-white uppercase transition-colors">
+              Masuk
+            </a>
+            <span class="text-white/20">|</span>
+            <a href="{{ route('register') }}" class="text-[#C9A227] hover:text-[#E7B63C] uppercase transition-colors font-bold">
+              Daftar
+            </a>
           @endauth
         </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-btn" type="button" class="p-2 text-[#9AA3B2] hover:text-[#C9A227] focus:outline-none transition-colors" aria-label="Toggle navigation">
+            <i class="bi bi-list text-2xl" id="menu-icon-open"></i>
+            <i class="bi bi-x text-2xl hidden" id="menu-icon-close"></i>
+          </button>
+        </div>
+
       </div>
     </div>
-  </nav>
 
-  <main class="flex-grow-1">
-    <div class="container py-5">
+    <!-- Mobile Dropdown Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-[#C9A227]/20 bg-[#0D121D] px-4 pt-3 pb-6 space-y-3 animate-subtle-in">
+
+      <!-- Tombol Admin Mobile (Section 3.2 Dokumentasi) -->
+      @if(Auth::check() && Auth::user()->role === 'admin')
+        <div class="pb-2 border-b border-white/10">
+          <a href="{{ route('admin.dashboard') }}" class="px-3 py-2.5 rounded-sm bg-[#C9A227] text-[#0A0E17] flex items-center gap-2 text-xs font-semibold uppercase tracking-wide">
+            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+            <span>Kembali ke Dashboard Admin</span>
+          </a>
+        </div>
+      @endif
+
+      <nav class="flex flex-col space-y-2 text-xs font-semibold tracking-[0.16em] uppercase">
+        <a href="{{ route('katalog') }}" class="px-3 py-2 rounded-sm transition-colors {{ request()->routeIs('katalog*') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
+          Katalog
+        </a>
+        <a href="{{ route('keranjang') }}" class="px-3 py-2 rounded-sm flex items-center gap-2 transition-colors {{ request()->routeIs('keranjang') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
+          <i class="bi bi-bag text-[#C9A227]"></i> Keranjang
+        </a>
+        <a href="{{ route('pesanan') }}" class="px-3 py-2 rounded-sm transition-colors {{ request()->routeIs('pesanan*') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
+          Pesanan Saya
+        </a>
+        <a href="{{ route('profil') }}" class="px-3 py-2 rounded-sm transition-colors {{ request()->routeIs('profil*') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
+          Profil
+        </a>
+      </nav>
+
+      <div class="pt-4 border-t border-white/10 flex flex-col gap-2 text-xs font-semibold tracking-[0.16em]">
+        @auth
+          <span class="text-[#9AA3B2] text-sm px-3">
+            Halo, <span class="text-white">{{ Auth::user()->name }}</span>
+          </span>
+          <form action="{{ route('logout') }}" method="POST" class="w-full">
+            @csrf
+            <button type="submit" class="w-full text-left px-3 py-2 text-[#9AA3B2] hover:text-[#C9A227] uppercase">
+              Keluar
+            </button>
+          </form>
+        @else
+          <a href="{{ route('login') }}" class="px-3 py-2 text-[#9AA3B2] hover:text-white uppercase">
+            Masuk
+          </a>
+          <a href="{{ route('register') }}" class="px-3 py-2 text-[#C9A227] hover:text-[#E7B63C] uppercase font-bold">
+            Daftar Akun
+          </a>
+        @endauth
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       @yield('content')
     </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <div class="row gy-4">
-        <div class="col-lg-4">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <div class="d-flex align-items-center justify-content-center" style="width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;color:var(--gold);font-family:'Cormorant Garamond',serif;">TP</div>
-            <div class="footer-brand">
-              <span>TUAN PARFUM</span>
-              <small>HAUTE PARFUMERIE</small>
+  <!-- Footer (Solid matte dark luxury) -->
+  <footer class="bg-[#0A0E17] border-t border-[#C9A227]/30 text-[#9AA3B2] mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+
+        <!-- Column 1: Brand Info -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-sm border border-[#C9A227] flex items-center justify-center text-[#C9A227] font-serif text-base font-bold tracking-widest">
+              TP
+            </div>
+            <div class="flex flex-col">
+              <span class="font-serif font-bold text-lg tracking-[0.24em] text-[#E6E9EF] uppercase leading-tight">
+                TUAN PARFUM
+              </span>
+              <span class="text-[9px] tracking-[0.36em] text-[#C9A227] uppercase font-sans font-medium">
+                HAUTE PARFUMERIE
+              </span>
             </div>
           </div>
-          <p class="mb-0">Koleksi parfum niche & extrait pilihan dengan konsentrasi tinggi untuk karakter aroma yang abadi dan elegan.</p>
+          <p class="text-sm leading-relaxed text-[#9AA3B2] max-w-sm font-light">
+            Koleksi parfum niche & extrait pilihan dengan konsentrasi tinggi untuk karakter aroma yang abadi, memikat, dan elegan.
+          </p>
         </div>
-        <div class="col-6 col-lg-2">
-          <h6 class="mb-3">Navigasi</h6>
-          <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><a href="{{ route('beranda') }}">Beranda</a></li>
-            <li><a href="{{ route('katalog') }}">Katalog</a></li>
-            <li><a href="{{ route('keranjang') }}">Keranjang</a></li>
+
+        <!-- Column 2: Navigasi -->
+        <div class="lg:col-span-2 space-y-3">
+          <h6 class="text-xs uppercase font-semibold tracking-[0.16em] text-[#E6E9EF]">Navigasi</h6>
+          <ul class="space-y-2 text-sm font-light">
+            <li><a href="{{ route('beranda') }}" class="hover:text-white transition-colors">Beranda</a></li>
+            <li><a href="{{ route('katalog') }}" class="hover:text-white transition-colors">Katalog</a></li>
+            <li><a href="{{ route('keranjang') }}" class="hover:text-white transition-colors">Keranjang</a></li>
           </ul>
         </div>
-        <div class="col-6 col-lg-2">
-          <h6 class="mb-3">Akun</h6>
-          <ul class="list-unstyled d-flex flex-column gap-2">
-            <li><a href="{{ route('pesanan') }}">Pesanan Saya</a></li>
-            <li><a href="{{ route('profil') }}">Profil</a></li>
+
+        <!-- Column 3: Akun -->
+        <div class="lg:col-span-2 space-y-3">
+          <h6 class="text-xs uppercase font-semibold tracking-[0.16em] text-[#E6E9EF]">Akun</h6>
+          <ul class="space-y-2 text-sm font-light">
+            <li><a href="{{ route('pesanan') }}" class="hover:text-white transition-colors">Pesanan Saya</a></li>
+            <li><a href="{{ route('profil') }}" class="hover:text-white transition-colors">Profil</a></li>
           </ul>
         </div>
-        <div class="col-lg-4">
-          <h6 class="mb-3">Hubungi Kami</h6>
-          <ul class="list-unstyled d-flex flex-column gap-2">
-            <li class="d-flex align-items-start gap-2"><i class="bi bi-geo-alt mt-1"></i><span>Plaza Indonesia Lt. 2, Jakarta Pusat</span></li>
-            <li class="d-flex align-items-start gap-2"><i class="bi bi-whatsapp mt-1"></i><span>+62 812-3456-7890</span></li>
-            <li class="d-flex align-items-start gap-2"><i class="bi bi-envelope mt-1"></i><span>concierge@tuanparfum.id</span></li>
+
+        <!-- Column 4: Kontak -->
+        <div class="lg:col-span-3 space-y-3">
+          <h6 class="text-xs uppercase font-semibold tracking-[0.16em] text-[#E6E9EF]">Hubungi Kami</h6>
+          <ul class="space-y-2.5 text-sm font-light">
+            <li class="flex items-start gap-2.5">
+              <i class="bi bi-geo-alt text-[#C9A227] mt-0.5"></i>
+              <span>Sungai Bangek, Kota Padang, Sumatera Barat</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="bi bi-whatsapp text-[#C9A227] mt-0.5"></i>
+              <span>+62 812-3456-7890</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="bi bi-envelope text-[#C9A227] mt-0.5"></i>
+              <span>concierge@tuanparfum.id</span>
+            </li>
           </ul>
         </div>
+
       </div>
-      <hr class="my-4">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small">
-        <p class="mb-2 mb-md-0">&copy; {{ date('Y') }} Tuan Parfum Haute Parfumerie. Hak Cipta Dilindungi Undang-Undang.</p>
-        <div class="d-flex gap-3">
-          <a href="#">Syarat & Ketentuan</a>
-          <a href="#">Kebijakan Privasi</a>
-          <a href="#">Bantuan Pelanggan</a>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-[#9AA3B2] gap-4">
+        <p class="m-0">&copy; {{ date('Y') }} Tuan Parfum Haute Parfumerie. Hak Cipta Dilindungi Undang-Undang.</p>
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
+          <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+          <a href="#" class="hover:text-white transition-colors">Bantuan Concierge</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Mobile Menu Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('menu-icon-open');
+      const iconClose = document.getElementById('menu-icon-close');
+
+      if (btn && menu) {
+        btn.addEventListener('click', function () {
+          const isHidden = menu.classList.contains('hidden');
+          if (isHidden) {
+            menu.classList.remove('hidden');
+            iconOpen.classList.add('hidden');
+            iconClose.classList.remove('hidden');
+          } else {
+            menu.classList.add('hidden');
+            iconOpen.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+
 </body>
 
 </html>
