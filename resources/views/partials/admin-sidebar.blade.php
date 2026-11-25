@@ -23,10 +23,21 @@
     <span>Kategori Aroma</span>
   </a>
 
+  @php
+    $actionNeededOrders = \App\Models\Order::whereIn('status', ['menunggu_verifikasi', 'diproses'])->count();
+  @endphp
+
   <a href="{{ route('admin.pesanan') }}"
-     class="flex items-center gap-3 px-4 py-3 rounded-sm transition-colors {{ request()->routeIs('admin.pesanan*') ? 'bg-[#C9A227] text-[#0A0E17]' : 'text-[#A0AAB9] hover:bg-white/5 hover:text-white' }}">
-    <i class="bi bi-bag-check text-sm"></i>
-    <span>Pesanan Masuk</span>
+     class="flex items-center justify-between px-4 py-3 rounded-sm transition-colors {{ request()->routeIs('admin.pesanan*') ? 'bg-[#C9A227] text-[#0A0E17]' : 'text-[#A0AAB9] hover:bg-white/5 hover:text-white' }}">
+    <div class="flex items-center gap-3">
+      <i class="bi bi-bag-check text-sm"></i>
+      <span>Pesanan Masuk</span>
+    </div>
+    @if($actionNeededOrders > 0)
+      <span class="px-1.5 py-0.5 bg-[#C9A227] text-[#0A0E17] text-[10px] font-bold rounded-sm tabular-nums">
+        {{ $actionNeededOrders }}
+      </span>
+    @endif
   </a>
 
   <a href="{{ route('admin.laporan') }}"

@@ -199,10 +199,20 @@
 
               <!-- Tombol Pesan (Guest dialihkan ke login, disabled jika stok 0) -->
               @if($item->stok > 0)
-                <a href="{{ Auth::check() ? route('keranjang') : route('login') }}"
-                   class="btn-gold px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all">
-                  Pesan
-                </a>
+                @auth
+                  <form action="{{ route('keranjang.store') }}" method="POST" class="m-0">
+                    @csrf
+                    <input type="hidden" name="parfum_id" value="{{ $item->id }}">
+                    <button type="submit" class="btn-gold px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-sm">
+                      <i class="bi bi-cart-plus"></i> Pesan
+                    </button>
+                  </form>
+                @else
+                  <a href="{{ route('login', ['pesan' => 1]) }}"
+                     class="btn-gold px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 shadow-sm">
+                    Pesan
+                  </a>
+                @endauth
               @else
                 <button type="button" disabled
                         class="px-4 py-2 rounded-sm text-xs font-semibold tracking-wider uppercase bg-white/5 text-[#6E7889] border border-white/5 cursor-not-allowed">

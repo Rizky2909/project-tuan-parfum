@@ -81,6 +81,37 @@
 
     <!-- Page Content -->
     <main class="flex-1 p-4 sm:p-8 max-w-7xl w-full mx-auto animate-subtle-in">
+      <!-- Flash Messages -->
+      @if(session('success'))
+        <div class="mb-6 p-4 rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>{{ session('success') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-emerald-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="mb-6 p-4 rounded-sm bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-exclamation-octagon-fill"></i>
+            <span>{{ session('error') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-rose-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
+      @if(session('info'))
+        <div class="mb-6 p-4 rounded-sm bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-info-circle-fill"></i>
+            <span>{{ session('info') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-sky-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
       @yield('content')
     </main>
 

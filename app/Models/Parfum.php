@@ -4,19 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Parfum extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel di database
-     */
     protected $table = 'parfums';
 
-    /**
-     * Kolom yang dapat diisi secara mass-assignment
-     */
     protected $fillable = [
         'nama',
         'kategori',
@@ -27,11 +22,29 @@ class Parfum extends Model
         'foto',
     ];
 
-    /**
-     * Helper format rupiah untuk tampilan rapi
-     */
+    protected $casts = [
+        'volume' => 'integer',
+        'harga'  => 'integer',
+        'stok'   => 'integer',
+    ];
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function getHargaRupiahAttribute(): string
     {
         return 'Rp ' . number_format($this->harga, 0, ',', '.');
+    }
+
+    public function getIsLowStockAttribute(): bool
+    {
+        return $this->stok <= 5;
     }
 }

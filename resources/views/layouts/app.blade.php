@@ -42,6 +42,10 @@
           </div>
         </a>
 
+        @php
+          $cartCount = Auth::check() ? Auth::user()->cartCount() : 0;
+        @endphp
+
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-8 text-xs font-semibold tracking-[0.16em] uppercase">
           <a href="{{ route('katalog') }}"
@@ -51,7 +55,12 @@
           <a href="{{ route('keranjang') }}"
              class="flex items-center gap-2 transition-colors pb-1 border-b-2 {{ request()->routeIs('keranjang') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
             <i class="bi bi-bag text-sm text-[#C9A227]"></i>
-            Keranjang
+            <span>Keranjang</span>
+            @if($cartCount > 0)
+              <span class="px-1.5 py-0.5 bg-[#C9A227] text-[#0A0E17] text-[10px] font-bold rounded-sm tabular-nums leading-none">
+                {{ $cartCount }}
+              </span>
+            @endif
           </a>
           <a href="{{ route('pesanan') }}"
              class="transition-colors pb-1 border-b-2 {{ request()->routeIs('pesanan*') ? 'text-[#E6E9EF] border-[#C9A227]' : 'text-[#9AA3B2] border-transparent hover:text-[#E6E9EF] hover:border-[#C9A227]/50' }}">
@@ -63,15 +72,21 @@
           </a>
         </nav>
 
-        <!-- Desktop Auth & Admin Dashboard Button -->
+        <!-- Desktop Auth & Admin/Kurir Dashboard Button -->
         <div class="hidden md:flex items-center gap-4 text-xs font-semibold tracking-[0.16em]">
 
-          <!-- Tombol Pintasan Panel Admin (Section 3.2 Dokumentasi) -->
+          <!-- Tombol Pintasan Panel Admin -->
           @if(Auth::check() && Auth::user()->role === 'admin')
             <a href="{{ route('admin.dashboard') }}"
                class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium tracking-wide uppercase bg-[#C9A227] text-[#0A0E17] hover:bg-[#DFB942] transition-colors rounded-sm shadow-sm">
               <i class="bi bi-speedometer2" aria-hidden="true"></i>
               <span>Dashboard Admin</span>
+            </a>
+          @elseif(Auth::check() && Auth::user()->role === 'kurir')
+            <a href="{{ route('kurir.pengiriman') }}"
+               class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium tracking-wide uppercase bg-[#60A5FA] text-[#0A0E17] hover:bg-[#93C5FD] transition-colors rounded-sm shadow-sm">
+              <i class="bi bi-bicycle" aria-hidden="true"></i>
+              <span>Panel Kurir</span>
             </a>
           @endif
 
@@ -124,8 +139,16 @@
         <a href="{{ route('katalog') }}" class="px-3 py-2 rounded-sm transition-colors {{ request()->routeIs('katalog*') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
           Katalog
         </a>
-        <a href="{{ route('keranjang') }}" class="px-3 py-2 rounded-sm flex items-center gap-2 transition-colors {{ request()->routeIs('keranjang') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
-          <i class="bi bi-bag text-[#C9A227]"></i> Keranjang
+        <a href="{{ route('keranjang') }}" class="px-3 py-2 rounded-sm flex items-center justify-between transition-colors {{ request()->routeIs('keranjang') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-bag text-[#C9A227]"></i>
+            <span>Keranjang</span>
+          </div>
+          @if($cartCount > 0)
+            <span class="px-1.5 py-0.5 bg-[#C9A227] text-[#0A0E17] text-[10px] font-bold rounded-sm tabular-nums">
+              {{ $cartCount }}
+            </span>
+          @endif
         </a>
         <a href="{{ route('pesanan') }}" class="px-3 py-2 rounded-sm transition-colors {{ request()->routeIs('pesanan*') ? 'bg-[#C9A227]/10 text-[#C9A227]' : 'text-[#9AA3B2] hover:bg-white/5 hover:text-white' }}">
           Pesanan Saya
@@ -161,6 +184,48 @@
   <!-- Main Content Area -->
   <main class="flex-grow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Flash Messages -->
+      @if(session('success'))
+        <div class="mb-6 p-4 rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between animate-subtle-in">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-check-circle-fill text-sm"></i>
+            <span>{{ session('success') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-emerald-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="mb-6 p-4 rounded-sm bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between animate-subtle-in">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-exclamation-octagon-fill text-sm"></i>
+            <span>{{ session('error') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-rose-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
+      @if(session('info'))
+        <div class="mb-6 p-4 rounded-sm bg-sky-500/10 border border-sky-500/30 text-sky-300 text-xs flex items-center justify-between animate-subtle-in">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-info-circle-fill text-sm"></i>
+            <span>{{ session('info') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-sky-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
+      @if(session('guest_order_info'))
+        <div class="mb-6 p-4 rounded-sm bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between animate-subtle-in">
+          <div class="flex items-center gap-2">
+            <i class="bi bi-shield-lock-fill text-sm"></i>
+            <span>{{ session('guest_order_info') }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-amber-300 hover:text-white">&times;</button>
+        </div>
+      @endif
+
       @yield('content')
     </div>
   </main>
