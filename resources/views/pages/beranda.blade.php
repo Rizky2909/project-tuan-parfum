@@ -134,10 +134,20 @@
                 {{ $item->harga_rupiah ?? 'Rp ' . number_format($item->harga, 0, ',', '.') }}
               </span>
               <!-- Guest diarahkan ke login saat memesan -->
-              <a href="{{ Auth::check() ? route('keranjang') : route('login', ['pesan' => 1]) }}"
-                 class="btn-gold px-3.5 py-1.5 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all">
-                Pesan
-              </a>
+              @auth
+                <form action="{{ route('keranjang.store') }}" method="POST" class="m-0">
+                  @csrf
+                  <input type="hidden" name="parfum_id" value="{{ $item->id }}">
+                  <button type="submit" class="btn-gold px-3.5 py-1.5 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1">
+                    <i class="bi bi-cart-plus"></i> Pesan
+                  </button>
+                </form>
+              @else
+                <a href="{{ route('login', ['pesan' => 1]) }}"
+                   class="btn-gold px-3.5 py-1.5 rounded-sm text-xs font-semibold tracking-wider uppercase transition-all">
+                  Pesan
+                </a>
+              @endauth
             </div>
           </div>
 

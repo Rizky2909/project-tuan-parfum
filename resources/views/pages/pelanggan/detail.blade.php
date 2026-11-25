@@ -163,10 +163,30 @@
         <!-- Tombol Aksi Desktop -->
         <div class="space-y-3 pt-3">
           @if($parfum->stok > 0)
-            <a href="{{ Auth::check() ? route('keranjang') : route('login') }}"
-               class="btn-gold w-full h-12 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
-              <i class="bi bi-bag"></i> Pesan Sekarang
-            </a>
+            @auth
+              <form action="{{ route('keranjang.store') }}" method="POST" class="space-y-3">
+                @csrf
+                <input type="hidden" name="parfum_id" value="{{ $parfum->id }}">
+                <div class="flex items-center gap-3">
+                  <div class="inline-flex items-center border border-white/10 rounded-sm bg-[#161E2E] h-12">
+                    <button type="button" onclick="let q = document.getElementById('detail-qty'); if(q.value > 1) q.value--;" class="px-3 py-2 text-white hover:text-[#C9A227] transition-colors">-</button>
+                    <input type="number" id="detail-qty" name="qty" value="1" min="1" max="{{ $parfum->stok }}" class="w-12 bg-transparent text-center font-bold text-sm text-white tabular-nums border-none focus:outline-none">
+                    <button type="button" onclick="let q = document.getElementById('detail-qty'); if(parseInt(q.value) < {{ $parfum->stok }}) q.value++;" class="px-3 py-2 text-white hover:text-[#C9A227] transition-colors">+</button>
+                  </div>
+                  <button type="submit" name="tambah_keranjang" value="1" class="flex-1 h-12 rounded-sm border border-[#C9A227]/60 hover:border-[#C9A227] text-[#C9A227] hover:bg-[#C9A227]/10 text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors">
+                    <i class="bi bi-cart-plus"></i> + Keranjang
+                  </button>
+                </div>
+                <button type="submit" name="beli_sekarang" value="1" class="btn-gold w-full h-12 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
+                  <i class="bi bi-bag-check-fill"></i> Pesan Langsung
+                </button>
+              </form>
+            @else
+              <a href="{{ route('login', ['pesan' => 1]) }}"
+                 class="btn-gold w-full h-12 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
+                <i class="bi bi-bag"></i> Masuk untuk Memesan
+              </a>
+            @endauth
           @else
             <button type="button" disabled
                     class="w-full h-12 rounded-sm text-xs font-semibold uppercase tracking-wider bg-white/5 text-[#6E7889] border border-white/5 cursor-not-allowed flex items-center justify-center">
@@ -203,10 +223,21 @@
       </div>
 
       @if($parfum->stok > 0)
-        <a href="{{ Auth::check() ? route('keranjang') : route('login') }}"
-           class="btn-gold h-11 px-6 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 flex-1 max-w-[200px]">
-          Pesan
-        </a>
+        @auth
+          <form action="{{ route('keranjang.store') }}" method="POST" class="flex-1 max-w-[200px] m-0">
+            @csrf
+            <input type="hidden" name="parfum_id" value="{{ $parfum->id }}">
+            <input type="hidden" name="beli_sekarang" value="1">
+            <button type="submit" class="btn-gold w-full h-11 px-4 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
+              Pesan Sekarang
+            </button>
+          </form>
+        @else
+          <a href="{{ route('login', ['pesan' => 1]) }}"
+             class="btn-gold h-11 px-4 rounded-sm text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 flex-1 max-w-[200px]">
+            Masuk & Pesan
+          </a>
+        @endauth
       @else
         <button disabled class="h-11 px-6 rounded-sm text-xs font-semibold uppercase tracking-wider bg-white/5 text-[#6E7889] flex items-center justify-center flex-1 max-w-[200px]">
           Habis
